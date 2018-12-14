@@ -24,6 +24,23 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// endpoint returns JSON object of information(ip, accepted languages and software) of the user browser
+app.get("/api/whoami", function(req, res) {
+  
+  const whoAmI = {};
+  
+  whoAmI.ip = (req.headers['x-forwarded-for'] ||
+     req.connection.remoteAddress ||
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress).split(",")[0];
+  
+  whoAmI.language = req.headers["accept-language"];
+  
+  whoAmI.software = req.headers["user-agent"];
+  
+  res.json({ip: whoAmI.ip, language: whoAmI.language, software: whoAmI.software })
+  
+})
 
 
 // listen for requests :)
